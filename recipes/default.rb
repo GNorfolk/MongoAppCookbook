@@ -29,3 +29,26 @@ end
 execute "install pm2" do
 	command "npm install pm2 -g"
 end
+
+link '/etc/nginx/sites-enabled/default' do
+	action :delete
+end
+
+link '/home/ubuntu/environment' do
+	to '/home/ubuntu/Devops/environment'
+end
+
+template '/etc/nginx/sites-available/reverse-proxy.conf' do
+	source 'reverse-proxy.conf.erb'
+	owner 'root'
+	group 'root'
+	mode '0755'
+end
+
+link '/etc/nginx/sites-enabled/reverse-proxy.conf' do
+	to '/etc/nginx/sites-available/reverse-proxy.conf'
+end
+
+service 'nginx' do
+	action :restart
+end
