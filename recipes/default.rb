@@ -4,7 +4,9 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-apt_update
+apt_update 'update' do
+  action :update
+end
 
 package 'nginx'
 
@@ -34,9 +36,10 @@ link '/etc/nginx/sites-enabled/default' do
 	action :delete
 end
 
-link '/home/ubuntu/environment' do
-	to '/home/ubuntu/Devops/environment'
-end
+# link '/home/ubuntu/environment' do
+# 	to '/home/ubuntu/Devops/environment'
+# 	action :create
+# end
 
 template '/etc/nginx/sites-available/reverse-proxy.conf' do
 	source 'reverse-proxy.conf.erb'
@@ -47,6 +50,7 @@ end
 
 link '/etc/nginx/sites-enabled/reverse-proxy.conf' do
 	to '/etc/nginx/sites-available/reverse-proxy.conf'
+	action :create
 end
 
 service 'nginx' do

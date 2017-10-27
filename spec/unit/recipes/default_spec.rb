@@ -19,6 +19,10 @@ describe 'node-server::default' do
       expect { chef_run }.to_not raise_error
     end
 
+    it 'does apt-update' do
+      expect(chef_run).to update_apt_update 'update'
+    end
+
     it 'installs nginx' do
       expect(chef_run).to install_package 'nginx'
     end
@@ -47,13 +51,18 @@ describe 'node-server::default' do
       expect(chef_run).to run_execute 'npm install pm2 -g'
     end
 
-    # it 'installs pm2' do
-    #   expect(chef_run).to install_package 'pm2'
-    # end
+    it 'destroys sites enabled link' do
+      expect(chef_run).to delete_link('/etc/nginx/sites-enabled/default')
+    end
 
-    # it 'installs npm' do
-    #   expect(chef_run).to install_package 'npm'
-    # end
+    it 'expects to make reverse proxy template' do
+      expect(chef_run).to create_template '/etc/nginx/sites-available/reverse-proxy.conf'
+      template = chef_run.template('/etc/nginx/sites-available/reverse-proxy.conf')
+    end
+
+    it 'creates reverse-proxy link' do
+      expect(chef_run).to create_link('/etc/nginx/sites-enabled/reverse-proxy.conf').with(to: '/etc/nginx/sites-available/reverse-proxy.conf')
+    end
 
   end
 end
