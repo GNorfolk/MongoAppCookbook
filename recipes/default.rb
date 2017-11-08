@@ -56,3 +56,18 @@ end
 service 'nginx' do
 	action :restart
 end
+
+execute 'run pm2-1' do
+	command 'pm2 start app.js'
+	cwd '/home/ubuntu/app'
+end
+
+execute 'run pm2-2' do
+	command 'pm2 save'
+	cwd '/home/ubuntu/app'
+end
+
+execute 'run pm2-3' do
+	command 'pm2 startup'
+	cwd '/home/ubuntu/app'
+end
