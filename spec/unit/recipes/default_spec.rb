@@ -51,18 +51,18 @@ describe 'node-server::default' do
       expect(chef_run).to run_execute 'npm install pm2 -g'
     end
 
-    it 'destroys sites enabled link' do
-      expect(chef_run).to delete_link('/etc/nginx/sites-enabled/default')
-    end
+    # it 'destroys sites enabled link' do
+    #   expect(chef_run).to delete_link('/etc/nginx/sites-enabled/default')
+    # end
 
     it 'expects to make reverse proxy template' do
-      expect(chef_run).to create_template '/etc/nginx/sites-available/reverse-proxy.conf'
-      template = chef_run.template('/etc/nginx/sites-available/reverse-proxy.conf')
+      expect(chef_run).to create_template '/etc/nginx/sites-available/default'
+      # template = chef_run.template('/etc/nginx/sites-available/reverse-proxy.conf')
     end
 
-    it 'creates reverse-proxy link' do
-      expect(chef_run).to create_link('/etc/nginx/sites-enabled/reverse-proxy.conf').with(to: '/etc/nginx/sites-available/reverse-proxy.conf')
-    end
+    # it 'creates reverse-proxy link' do
+    #   expect(chef_run).to create_link('/etc/nginx/sites-enabled/reverse-proxy.conf').with(to: '/etc/nginx/sites-available/reverse-proxy.conf')
+    # end
 
   end
 end
